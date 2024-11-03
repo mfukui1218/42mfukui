@@ -1,29 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   minitalk.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mfukui <mfukui@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/20 14:11:10 by mfukui            #+#    #+#             */
-/*   Updated: 2023/09/27 00:42:26 by mfukui           ###   ########.fr       */
+/*   Created: 2023/10/26 15:22:13 by mfukui            #+#    #+#             */
+/*   Updated: 2023/11/11 01:48:24 by mfukui           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef MINITALK_H
+# define MINITALK_H
+# include <signal.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include "libft/libft.h"
+# include "ft_printf/ft_printf.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
-{
-	size_t	i;
-
-	i = 0;
-	while ((s1[i] || s2[i]) && i < n)
-	{
-		if ((unsigned char)s1[i] != (unsigned char)s2[i])
-			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-		i++;
-	}
-	if (i == n)
-		return (0);
-	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-}
+void	ft_handler(int signum);
+void	ft_sig_fun(char *c, int pid);
+int		ft_operate(void);
+int		ft_atoi_rmkd(const char *str);
+#endif

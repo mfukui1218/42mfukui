@@ -1,42 +1,44 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: mfukui <mfukui@student.42.fr>              +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/09/22 15:46:36 by mfukui            #+#    #+#              #
-#    Updated: 2023/09/27 01:56:50 by mfukui           ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -std=c99 -I.
+CFLAGS = -Wall -Wextra -Werror
+LIBFT_DIR = libft
+PRINTF_DIR = ft_printf
+NAME_SERVER = server
+NAME_CLIENT = client
+LIB_NAME = libminitalk.a
 
-SRC = ft_isalpha.c ft_memcpy.c ft_split.c ft_strlen.c ft_tolower.c \
-ft_isascii.c ft_memmove.c ft_strchr.c ft_strmapi.c ft_toupper.c \
-ft_isdigit.c ft_memset.c ft_strdup.c ft_strncmp.c \
-ft_atoi.c ft_isprint.c ft_putchar_fd.c ft_striteri.c ft_strnstr.c \
-ft_bzero.c ft_itoa.c ft_putendl_fd.c ft_strjoin.c ft_strrchr.c \
-ft_calloc.c ft_memchr.c ft_putnbr_fd.c ft_strlcat.c ft_strtrim.c \
-ft_isalnum.c ft_memcmp.c ft_putstr_fd.c ft_strlcpy.c ft_substr.c
+SRC_UTILS = minitalk_utils.c
+SRC_SERVER = server.c
+SRC_CLIENT = client.c
 
-OBJ = $(SRC:.c=.o)
-TARGET = libft.a
+OBJ_UTILS = $(SRC_UTILS:.c=.o)
+OBJ_SERVER = $(SRC_SERVER:.c=.o)
+OBJ_CLIENT = $(SRC_CLIENT:.c=.o)
 
-all: $(TARGET)
+all: $(LIB_NAME) $(NAME_SERVER) $(NAME_CLIENT)
 
-$(TARGET): $(OBJ)
+$(LIB_NAME): $(OBJ_UTILS)
 	ar rcs $@ $^
 
-%.o: %.c libft.h
+$(NAME_SERVER): $(OBJ_SERVER) $(LIB_NAME)
+	$(MAKE) -C $(LIBFT_DIR)
+	$(MAKE) -C $(PRINTF_DIR)
+	$(CC) $(CFLAGS) $(OBJ_SERVER) -L. -lminitalk -L$(LIBFT_DIR) -lft -L$(PRINTF_DIR) -lftprintf -o $(NAME_SERVER)
+
+$(NAME_CLIENT): $(OBJ_CLIENT) $(LIB_NAME)
+	$(CC) $(CFLAGS) $(OBJ_CLIENT) -L. -lminitalk -L$(LIBFT_DIR) -lft -L$(PRINTF_DIR) -lftprintf -o $(NAME_CLIENT)
+
+%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJ)
+	rm -f $(OBJ_UTILS) $(OBJ_SERVER) $(OBJ_CLIENT)
+	$(MAKE) -C $(LIBFT_DIR) clean
+	$(MAKE) -C $(PRINTF_DIR) clean
 
 fclean: clean
-	rm -f $(TARGET)
+	rm -f $(LIB_NAME) $(NAME_SERVER) $(NAME_CLIENT)
+	$(MAKE) -C $(LIBFT_DIR) fclean
+	$(MAKE) -C $(PRINTF_DIR) fclean
 
 re: fclean all
 

@@ -1,25 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   ft_putstr_c.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mfukui <mfukui@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/26 15:22:13 by mfukui            #+#    #+#             */
-/*   Updated: 2023/11/11 01:48:24 by mfukui           ###   ########.fr       */
+/*   Created: 2023/08/19 15:56:05 by mfukui            #+#    #+#             */
+/*   Updated: 2023/10/03 17:35:49 by mfukui           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
-# include <signal.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include "libft/libft.h"
-# include "ft_printf/ft_printf.h"
+#include "ft_printf.h"
 
-void	ft_handler(int signum);
-void	ft_sig_fun(char *c, int pid);
-int		ft_operate(void);
-int		ft_atoi_rmkd(const char *str);
-#endif
+size_t	ft_putstr_c(char *str)
+{
+	size_t	count;
+
+	if (str == NULL)
+	{
+		write(1, "(null)", 6);
+		return (6);
+	}
+	count = 0;
+	while (*str)
+	{
+		write(1, str++, 1);
+		count++;
+	}
+	return (count);
+}
+
+// int main() {
+//     char message[] = "Im sory";
+//     ft_putstr(message);
+//     return (0);
+// }

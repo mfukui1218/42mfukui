@@ -1,40 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.c                                           :+:      :+:    :+:   */
+/*   ft_num_len.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mfukui <mfukui@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/26 15:23:13 by mfukui            #+#    #+#             */
-/*   Updated: 2023/11/11 01:52:50 by mfukui           ###   ########.fr       */
+/*   Created: 2023/10/03 15:00:39 by mfukui            #+#    #+#             */
+/*   Updated: 2023/10/03 17:35:08 by mfukui           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "ft_printf.h"
 
-extern volatile sig_atomic_t	g_i;
-
-int	main(int argc, char *argv[])
+size_t	ft_num_len(int n)
 {
-	pid_t	pid;
-	char	str;
+	size_t	c;
+	long	num;
 
-	if (argc < 2)
+	c = 0;
+	num = n;
+	if (num == 0)
+		return (1);
+	if (num < 0)
 	{
-		g_i = 0;
-		ft_printf("Server PID: %d\n", getpid());
-		signal(SIGUSR1, ft_handler);
-		signal(SIGUSR2, ft_handler);
-		while (1)
-		{
-			pause();
-			str = ft_operate();
-		}
+		num *= -1;
+		c++;
 	}
-	else
+	while (num)
 	{
-		pid = ft_atoi_rmkd(argv[1]);
-		ft_sig_fun(argv[2], pid);
+		num = num / 10;
+		c++;
 	}
-	return (0);
+	return (c);
 }
